@@ -38,8 +38,8 @@ public class UserService {
 	public ResponseTemplate getUserWithDepartment(Long userId) {
 		ResponseTemplate rt = new ResponseTemplate();
 		User user = repository.findByUserId(userId);
-		Department department = restTemplate.getForObject("http://localhost:8080/department/fetch/" + user.getUserId(),
-				Department.class);
+		Department department = restTemplate
+				.getForObject("http://localhost:8080/department/fetchDepartment/" + user.getUserId(), Department.class);
 		rt.setUser(user);
 		rt.setDepartment(department);
 		return rt;
