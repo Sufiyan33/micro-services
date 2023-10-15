@@ -24,7 +24,7 @@ spring:
        - name: CircuitBreaker
          args:
           name: Employee-Management
-          fallbackuri: forward:/employeServiceFallback
+          fallbackuri: forward:/companyServiceFallback
 
 hystrix:
  command:
