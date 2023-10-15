@@ -4,6 +4,36 @@ server:
 spring:
  application:
   name: API-Gateway
+ cloud:
+  gateway:
+   routes:
+    - id: Employee-Management
+      uri: lb:/Employee-Management
+      predicates: 
+       - path: =/employee/**
+      filters:
+       - name: CircuitBreaker
+         args:
+          name: Employee-Management
+          fallbackuri: forward:/employeServiceFallback
+    - id: Company-management
+      uri: lb:/Company-management
+      predicates: 
+       - path: =/company/**
+      filters:
+       - name: CircuitBreaker
+         args:
+          name: Employee-Management
+          fallbackuri: forward:/employeServiceFallback
+
+hystrix:
+ command:
+  fallbackcmd:
+   execution:
+    isolation:
+     thread:
+      timeoutInMiliseconds: 4000
+ 
   
 eureka:
  client:
