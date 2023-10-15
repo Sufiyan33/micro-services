@@ -1,0 +1,222 @@
+Get started with OpenApi.
+THe library supports below :
+1 : OpenAPI 3
+2 : Spring-boot v3 (Java 17 & Jakarta EE 9)
+3 : JSR-303, specifically for @NotNull, @Min, @Max, and @Size.
+4 : Swagger-ui
+5 : OAuth 2
+6 : GraalVM native images
+
+Lots of changes has been done in spring boot 3 and Swagger.
+Note : Hence If you are using spring boot v3+ then add below open api dependency :
+Question : How to choose which dependency should I use :
+-> springdoc-openapi-starter-webmvc-api if they depend on spring-boot-starter-web and they only need the access to the OpenAPI endpoints.
+-> OR springdoc-openapi-starter-webmvc-ui, if they depend on spring-boot-starter-web and they also need the access to the swagger-ui.
+<dependency>
+		<groupId>org.springdoc</groupId>
+		<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+		<version>2.2.0</version>
+</dependency>
+
+- if you will run the program it will give you some exception and the is :
+jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+
+Note : Below spring v3 and swagger v2, it will work fine.
+
+Let's fix this issue, In order to fix this issue you should add validation dependency in your parent pom :
+<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
+-> Now, Good to go !! run application and smile😊.
+-> Hit below url to access swagger-ui
+	http://localhost:8080/swagger-ui/index.html
+-> For postman, select Get and then hit below url :
+	http://localhost:8080/swagger-ui/index.html
+
+-> in both cases you will see json docs and some explaination about api.
+-> If you will add/delete/update any record from swagger-ui then it will also reflect in H2 database.
+
+------------------------
+	Openapi Features
+------------------------
+1 : Adding API information and security documents
+	For better performance of documentation generation, create config class or add below annotation in main class where you have written main method.
+	1-@OpenAPIDefinitation (infor, servers, security, tags, extentions, externalDocs)
+	2-@SecurityScheme (Security)
+-> You can add below information to make it so beautiful along wit @OpenAPIDefinitation.
+	@OpenAPIDefinition(info = 
+	@Info(
+	contact = @Contact(name = "Sufiyan", 
+	email = "abc@gmail.com", 
+	url = "http://localhost:8080/cruds"), 
+	description = "OpenApi documentaion for spring boot crud apps", 
+	title = "OpenApi specification - Sufiyan", 
+	version = "1.0", 
+	license = @License(
+	name = "Licence name",
+	url = "http://localhost:808/"), 
+	termsOfService = "Terms of service declare here"), 
+	servers = {
+		@Server(description = "Local env", url = "http://localhost:808/"),
+		@Server(description = "Prod env", url = "http://localhost:808/") })
+		
+->	you can also add security here but it depends on your requirement. If you want to apply same security to all endpoints then add this & if you don't want to add
+	same security on all then you can create multiple @SecurityScheme and apply it. for example : Basic Authentication, in-memory authentication etc.
+
+-> You can use SecurityScheme annotation for adding security like JWT, OAuth etc : Like below :
+	@SecurityScheme(name = "BearerAuth", description = "JWT Auth description", scheme = "bearer", type = SecuritySchemeType.HTTP, bearerFormat = "JWT", in = SecuritySchemeIn.HEADER)
+	
+-> After adding this hit the swagger-ui, at the right side you will some Authorize button. Click on this and give access token to allow it.
+
+2 : You can add @SecurityRequirement(name = "bearerAuth") at controller level to authenticate each endpoints. It will show you lock on each api.
+	You can use it for different-2 role. Like admin, user, teacher etc.
+
+3 : If you want to add lock at your all api's then follow step 1 (openApiDefinitaion) and security here.	
+	@OpenAPIDefinition(security = { @SecurityRequirement(name = "bearerAuth") }))
+	
+4 : Error handling by using Rest with @ControllerAdvice
+	To generate documentation automatically, make sure all the methods declare the HTTP Code responses using the annotation: @ResponseStatus
+5 : Disabling openAi endpoints 
+	If you want to disable openApi endpoints which is by default (/v3/api-docs by default) then use below :
+	springdoc.api-docs.enabled=false
+	
+6 : Disabling swagger-ui
+	if you want to disbale swagger-ui and want to implement your own then write below in application.properties
+	springdoc.swagger-ui.enabled=false
+	
+------------------------
+	Customise Endpoints
+------------------------
+In this section we will tackle below things related to api :
+What this api will do?
+Why you created this api?
+How many parameters is it taking?
+What is the summary? OR Add summary of api and much more.
+
+1 : Go to Controller class and add below tag to make it clear what is controller & add summary of it?
+	@Tag(name = "Employee Management", description = "We are creating CURD apps with Spring Boot & taking Employee as a reference")
+2 : Add @Operation annotation at api level to add explaination that why you have created, what is the purpose, what is the response and response code etc.
+	It comes with many option like : name, description, summary, hidden, method, operationId, response, responseBody, servers, security etc.
+	@PostMapping("/save")
+	@Operation(description = "Save Employee Data", 
+	summary = "We are trying to save employee data one by one into H2 Database.", 
+	responses = {
+			@ApiResponse(description = "Success",
+					responseCode = "200"),
+			@ApiResponse(description = "UnAuthorized",
+			responseCode = "403")},
+	method ="Post",
+	deprecated = false,
+	parameters = {
+			@Parameter(name = "Employee")
+	})
+	
+	@Operation(
+			description = "Fetch employee by id",
+			summary = "We will make call to h2 db with empId to fetch data record",
+			method = "Get",
+			parameters = {
+					@Parameter(name ="id")
+			},
+			responses = {
+					@ApiResponse(
+							description = "Success",
+							responseCode = "200"),
+					@ApiResponse(
+							description = "InternalServer",
+							responseCode = "500")
+			},
+			operationId = "/emp/{id}"
+			)
+
+3 : If you don't want to expose any endpoints or controller to the outside world then use below annotation either class lever or api/method level
+	@Hidden
+
+------------------------
+Migrating from SpringFox
+------------------------
+1 : If you are using older version of spring boot v<3 and swagger 2 then you need to migrate it to latest versions.
+2 : They made lots of changes, Here we will see one by one that how you will migrate it.
+3 : Remove springFox and swagger2 dependencies and add webmvc-ui that is below :
+	springdoc-openapi-starter-webmvc-ui
+	
+	this started included both hence you don't need to add multiple dependencies.
+4 : Replcate swagger2 annotation with swagger 3.
+	Note : Don't do that because it is already added in webmvc-ui dependency.
+5 : Many tags has been changed. Let's befor and now :
+
+	Before → After 
+	@Api → @Tag
+	@ApiIgnore → @Parameter(hidden = true) or @Operation(hidden = true) or @Hidden
+	@ApiImplicitParam → @Parameter
+	@ApiImplicitParams → @Parameters
+	@ApiModel → @Schema
+	@ApiModelProperty(hidden = true) → @Schema(accessMode = READ_ONLY)
+	@ApiModelProperty → @Schema
+	@ApiOperation(value = "foo", notes = "bar") → @Operation(summary = "foo", description = "bar")
+	@ApiParam → @Parameter
+	@ApiResponse(code = 404, message = "foo") → @ApiResponse(responseCode = "404", description = "foo")
+	
+6 : You also need to create Docket bean as part of swagger2 but with openApi it changed :
+	This step is optional: Only if you have multiple Docket beans replace them with GroupedOpenApi beans.
+	example :
+	
+	Before :: 
+	@Bean
+	public Docket publicApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("org.github.springshop.web.public"))
+				.paths(PathSelectors.regex("/public.*"))
+				.build()
+				.groupName("springshop-public")
+				.apiInfo(apiInfo());
+	}
+	
+	@Bean
+	public Docket adminApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.basePackage("org.github.springshop.web.admin"))
+				.paths(PathSelectors.regex("/admin.*"))
+				.apis(RequestHandlerSelectors.withMethodAnnotation(Admin.class))
+				.build()
+				.groupName("springshop-admin")
+				.apiInfo(apiInfo());
+	}
+	
+	After :: 
+	@Bean
+	public GroupedOpenApi publicApi() {
+		return GroupedOpenApi.builder()
+				.group("springshop-public")
+				.pathsToMatch("/public/**")
+				.build();
+	}
+	@Bean
+	public GroupedOpenApi adminApi() {
+		return GroupedOpenApi.builder()
+				.group("springshop-admin")
+				.pathsToMatch("/admin/**")
+				.addOpenApiMethodFilter(method -> method.isAnnotationPresent(Admin.class))
+				.build();
+	}
+
+7: If you have only one Docket — remove it and instead add properties to your application.properties:
+	springdoc.packagesToScan=package1, package2
+	springdoc.pathsToMatch=/v1, /api/balance/**
+	
+8 : Add bean of OpenAPI type. See example:
+	 @Bean
+	public OpenAPI springShopOpenAPI() {
+		return new OpenAPI()
+				.info(new Info().title("SpringShop API")
+				.description("Spring shop sample application")
+				.version("v0.0.1")
+				.license(new License().name("Apache 2.0").url("http://springdoc.org")))
+				.externalDocs(new ExternalDocumentation()
+				.description("SpringShop Wiki Documentation")
+				.url("https://springshop.wiki.github.org/docs"));
+	}
