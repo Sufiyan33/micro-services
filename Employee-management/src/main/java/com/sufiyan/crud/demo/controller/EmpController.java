@@ -103,7 +103,7 @@ public class EmpController {
 		return empService.deleteRecord(id);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/fetch/{id}")
 	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") long empId) {
 		return empService.fetchEmployeeWithDepartment(empId);
 	}

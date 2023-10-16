@@ -73,7 +73,7 @@ public class EmployeeService {
 		RespnseTemplateVO vo = new RespnseTemplateVO();
 		Employee employeeObj = repo.findByEmpId(empId);
 
-		Company companyObj = restTemplate.getForObject("http://localhost:8081/company", Company.class,
+		Company companyObj = restTemplate.getForObject("http://localhost:8081/company/com", Company.class,
 				employeeObj.getCompanyId());
 		vo.setEmployee(employeeObj);
 		vo.setCompany(companyObj);
