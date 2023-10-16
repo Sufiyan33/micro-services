@@ -38,7 +38,7 @@ public class CompanyController {
 		return service.saveAllDetails(company);
 	}
 
-	@GetMapping("/com/{id}")
+	@GetMapping("/{id}")
 	public Company getCompany(@PathVariable("id") long companyId) {
 		return service.fetchCompany(companyId);
 	}
@@ -48,14 +48,14 @@ public class CompanyController {
 		return service.fetchAllCompanyDetails();
 	}
 
-	@PutMapping("/update/{id}")
+	@PutMapping("/put/{id}")
 	public Company updateCompany(@PathVariable("id") long companyId, @RequestBody Company company) {
 		log.info("Company name: " + company.getCompanyName() + " company Id: " + company.getCompanyId() + " companyId: " + companyId
 				+ " & company object is : " + company);
 		return service.updateCompanyDetails(company, companyId);
 	}
 
-	@PatchMapping("updates/{id}")
+	@PatchMapping("patch/{id}")
 	public Company updatePartially(@PathVariable("id") long companyId, @RequestBody Company company) {
 		return service.updateCompany(companyId, company);
 	}
