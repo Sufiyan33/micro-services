@@ -7,6 +7,10 @@ public class RespnseTemplateVO {
 	private Employee employee;
 	private Company company;
 
+	public RespnseTemplateVO() {
+		super();
+	}
+
 	public RespnseTemplateVO(Employee employee, Company company) {
 		super();
 		this.employee = employee;
