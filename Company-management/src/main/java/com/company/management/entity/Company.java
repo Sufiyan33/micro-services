@@ -16,6 +16,10 @@ public class Company {
 	private String companyEmail;
 	private String companyCode;
 
+	public Company() {
+		super();
+	}
+
 	public Company(long companyId, String companyName, String companyAddress, String companyEmail,String companyCode) {
 		super();
 		this.companyId = companyId;
