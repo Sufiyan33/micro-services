@@ -38,7 +38,7 @@ public class CompanyController {
 		return service.saveAllDetails(company);
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/com/{id}")
 	public Company getCompany(@PathVariable("id") long companyId) {
 		return service.fetchCompany(companyId);
 	}
