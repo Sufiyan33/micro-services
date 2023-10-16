@@ -69,12 +69,15 @@ public class EmployeeService {
 		return "Employee has been deleted : " + id;
 	}
 
-	public RespnseTemplateVO fetchEmployeeWithDepartment(long empId) {
+	public RespnseTemplateVO fetchEmployeeWithDepartment(Long empId) {
+		log.info("Inside fetchEmployeeWithDepartment method:: ");
 		RespnseTemplateVO vo = new RespnseTemplateVO();
 		Employee employeeObj = repo.findByEmpId(empId);
+		log.info("CompanyId from employeeObj :: " + employeeObj.getCompanyId());
 
-		Company companyObj = restTemplate.getForObject("http://localhost:8081/company/com", Company.class,
-				employeeObj.getCompanyId());
+		Company companyObj = restTemplate.getForObject("http://localhost:8081/company/" + employeeObj.getCompanyId(),
+				Company.class);
+		log.info("Company name from companyObj :: " + companyObj.getCompanyName());
 		vo.setEmployee(employeeObj);
 		vo.setCompany(companyObj);
 		return vo;
