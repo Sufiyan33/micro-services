@@ -6,9 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.sufiyan.crud.demo.modal.Employee;
 import com.sufiyan.crud.demo.repository.EmpRepository;
+import com.sufiyan.crud.demo.vo.Company;
+import com.sufiyan.crud.demo.vo.RespnseTemplateVO;
 
 @Service
 public class EmployeeService {
@@ -17,6 +20,9 @@ public class EmployeeService {
 
 	@Autowired
 	EmpRepository repo;
+
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public Employee save(Employee emp) {
 		return repo.save(emp);
@@ -61,5 +67,16 @@ public class EmployeeService {
 	public String deleteRecord(long id) {
 		repo.deleteById(id);
 		return "Employee has been deleted : " + id;
+	}
+
+	public RespnseTemplateVO fetchEmployeeWithDepartment(long empId) {
+		RespnseTemplateVO vo = new RespnseTemplateVO();
+		Employee employeeObj = repo.findByEmployeeId(empId);
+
+		Company companyObj = restTemplate.getForObject("http://localhost:8081/company", Company.class,
+				employeeObj.getCompanyId());
+		vo.setEmployee(employeeObj);
+		vo.setCompany(companyObj);
+		return vo;
 	}
 }

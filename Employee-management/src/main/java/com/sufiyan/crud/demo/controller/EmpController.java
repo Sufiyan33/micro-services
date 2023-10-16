@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sufiyan.crud.demo.empservice.EmployeeService;
 import com.sufiyan.crud.demo.modal.Employee;
+import com.sufiyan.crud.demo.vo.RespnseTemplateVO;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,7 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/emp")
+@RequestMapping("/employee")
 @Tag(name = "Employee Management", description = "We are creating CURD apps with Spring Boot & taking Employee as a reference")
 public class EmpController {
 
@@ -100,5 +101,10 @@ public class EmpController {
 					@ApiResponse(description = "Not Found", responseCode = "400") })
 	public String deleteProductById(@PathVariable long id) {
 		return empService.deleteRecord(id);
+	}
+
+	@GetMapping("/{id}")
+	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") long empId) {
+		return empService.fetchEmployeeWithDepartment(empId);
 	}
 }

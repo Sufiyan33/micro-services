@@ -20,8 +20,10 @@ public class Employee {
 	private String email;
 	private String department;
 	private String belongsTo;
+	private long companyId;
 
-	public Employee(long empId, String firstName, String lastName, String email, String department, String belongsTo) {
+	public Employee(long empId, String firstName, String lastName, String email, String department, String belongsTo,
+			long companyId) {
 		super();
 		this.empId = empId;
 		this.firstName = firstName;
@@ -29,6 +31,7 @@ public class Employee {
 		this.email = email;
 		this.department = department;
 		this.belongsTo = belongsTo;
+		this.companyId = companyId;
 	}
 
 	public long getEmpId() {
@@ -79,9 +82,17 @@ public class Employee {
 		this.belongsTo = belongsTo;
 	}
 
+	public long getCompanyId() {
+		return companyId;
+	}
+
+	public void setCompanyId(long companyId) {
+		this.companyId = companyId;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [empId=" + empId + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", department=" + department + ", belongsTo=" + belongsTo + "]";
+				+ ", department=" + department + ", belongsTo=" + belongsTo + ", companyId=" + companyId + "]";
 	}
 }
