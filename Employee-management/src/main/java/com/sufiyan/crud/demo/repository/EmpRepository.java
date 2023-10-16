@@ -8,5 +8,5 @@ import com.sufiyan.crud.demo.modal.Employee;
 @Repository
 public interface EmpRepository extends JpaRepository<Employee, Long> {
 
-	Employee findByEmployeeId(long empId);
+	Employee findByEmpId(long empId);
 }
