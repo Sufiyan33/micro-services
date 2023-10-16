@@ -61,4 +61,9 @@ public class CompanyService {
 		repo.deleteById(id);
 		return "Company has been deleted : " + id;
 	}
+
+	//This will be used to search employee with companyId
+	public Company findCompanyById(Long companyId) {
+		return repo.findByCompanyId(companyId);
+	}
 }
