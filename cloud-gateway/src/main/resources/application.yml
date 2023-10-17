@@ -11,7 +11,7 @@ spring:
     - id: Employee-Management
       uri: lb:/Employee-Management
       predicates: 
-       - path: =/employee/**
+       - Path=/employee/**
       filters:
        - name: CircuitBreaker
          args:
@@ -20,7 +20,7 @@ spring:
     - id: Company-management
       uri: lb:/Company-management
       predicates: 
-       - path: =/company/**
+       - Path=/company/**
       filters:
        - name: CircuitBreaker
          args:
@@ -34,6 +34,12 @@ hystri:
     isolation:
      thread:
       timeoutInMiliseconds: 4000
+      
+management:
+ endpoints:
+  web:
+   exposure:
+    include: hystrix.stream
  
   
 eureka:
