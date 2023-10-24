@@ -56,4 +56,6 @@ public class Company {
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
     }
+
+
 }

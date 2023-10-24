@@ -68,6 +68,7 @@ public class CompanyService {
 		repo.deleteById(id);
 		return "Company has been deleted : " + id;
 	}
+
         
         public RespnseTemplateVO fetchEmployeeWithDepartment(long id) {
 		RespnseTemplateVO vo = new RespnseTemplateVO();
@@ -80,4 +81,11 @@ public class CompanyService {
 		return vo;
 	}
         
+
+
+	//This will be used to search employee with companyId
+	public Company findCompanyById(Long companyId) {
+		return repo.findByCompanyId(companyId);
+	}
+
 }

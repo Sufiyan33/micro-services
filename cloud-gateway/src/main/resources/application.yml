@@ -4,13 +4,14 @@ server:
 spring:
  application:
   name: API-Gateway
+ 
  cloud:
   gateway:
    routes:
     - id: Employee-Management
       uri: lb:/Employee-Management
       predicates: 
-       - path: =/employee/**
+       - Path=/employee/**
       filters:
        - name: CircuitBreaker
          args:
@@ -19,20 +20,26 @@ spring:
     - id: Company-management
       uri: lb:/Company-management
       predicates: 
-       - path: =/company/**
+       - Path=/company/**
       filters:
        - name: CircuitBreaker
          args:
           name: Employee-Management
           fallbackuri: forward:/companyServiceFallback
 
-hystrix:
- command:
-  fallbackcmd:
+hystri:
+ comman:
+  fallbackcm:
    execution:
     isolation:
      thread:
       timeoutInMiliseconds: 4000
+      
+management:
+ endpoints:
+  web:
+   exposure:
+    include: hystrix.stream
  
   
 eureka:

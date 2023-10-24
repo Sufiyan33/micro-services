@@ -105,8 +105,12 @@ public class EmpController {
 	}
 
 	//http://localhost:8081/fetch/{id}
+
+	// This will be used to search employee with companyId
+
 	@GetMapping("/fetch/{id}")
-	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") long empId) {
+	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") Long empId) {
+		log.info("Inside getEmployeeWithCompany method ::");
 		return empService.fetchEmployeeWithDepartment(empId);
 	}
 }

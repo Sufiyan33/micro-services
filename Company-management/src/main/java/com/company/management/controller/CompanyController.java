@@ -91,7 +91,15 @@ public class CompanyController {
         //http://localhost:8081/company/com/{id}
 	@GetMapping("/com/{id}")
 	public Company getCompany(@PathVariable("id") long companyId) {
+		log.info("Inside getCompany method :: ");
 		return service.fetchCompany(companyId);
+	}
+	
+	//This will be used to search employee with companyId
+	@GetMapping("/{id}")
+	public Company getCompanyById(@PathVariable("id") Long companyId) {
+		log.info("Inside getCompanyById method when employee send restRequest :: ");
+			return service.findCompanyById(companyId);
 	}
 
 
