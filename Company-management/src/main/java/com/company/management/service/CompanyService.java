@@ -1,14 +1,17 @@
 package com.company.management.service;
 
+import com.company.management.VO.RespnseTemplateVO;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.company.management.VO.Employee;
 
 import com.company.management.entity.Company;
 import com.company.management.repository.CompanyRepositoy;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class CompanyService {
@@ -17,6 +20,9 @@ public class CompanyService {
 
 	@Autowired
 	CompanyRepositoy repo;
+        
+        @Autowired
+	private RestTemplate restTemplate;
 
 	public Company save(Company company) {
 		return repo.save(company);
@@ -27,6 +33,7 @@ public class CompanyService {
 	}
 
 	public Company fetchCompany(long companyId) {
+         
 		return repo.findById(companyId).get();
 	}
 
@@ -62,8 +69,23 @@ public class CompanyService {
 		return "Company has been deleted : " + id;
 	}
 
+        
+        public RespnseTemplateVO fetchEmployeeWithDepartment(long id) {
+		RespnseTemplateVO vo = new RespnseTemplateVO();
+		Company comObj = repo.findByComId(id);
+
+		Employee companyObj = restTemplate.getForObject("http://localhost:8088/employee/com", Employee.class,
+				comObj.getCompanyId());
+		vo.setCompany(comObj);
+		vo.setEmployee(companyObj);
+		return vo;
+	}
+        
+
+
 	//This will be used to search employee with companyId
 	public Company findCompanyById(Long companyId) {
 		return repo.findByCompanyId(companyId);
 	}
+
 }

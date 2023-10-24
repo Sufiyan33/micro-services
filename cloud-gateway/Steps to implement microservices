@@ -1,0 +1,159 @@
+------------------------------------------
+Components of microservices architecture :
+------------------------------------------
+
+There are many component of MA, few are below :
+1 : API Gateway - An entry point for client requests that routes requests to the appropriate microservices, performs authentication and authorization, and handles other tasks such as caching and request-response mapping.
+
+2 : Service Discovery - A service registry that helps services locate and communicate with each other.
+
+3 : Load Balancer - A component that distributes incoming requests to the appropriate service instances.
+
+4 : Service Registry - A database of all available microservices, their endpoints, and metadata.
+
+5 : Circuit Breaker - A mechanism that helps prevent cascading failures by interrupting communication between services when one service is not responding.
+
+6 : Service Monitoring - A system that tracks the health and performance of microservices and generates alerts in case of failures or performance degradation.
+
+7 : Service Orchestration - A layer that coordinates communication and interactions between microservices to ensure that they work together correctly.
+
+8 : Configuration Server - A centralized repository for storing configuration information that is accessible to all microservices.
+------------------------------------------
+Advantages : 
+------------------------------------------
+1- Scalability improvements
+2- Improved fault isolation
+3- Program language and technology agnostic
+4- Easy to deploy
+5- Easy to test
+6- Improved data security
+7- Independent deployment
+
+------------------------------------------
+Disadvantages :
+------------------------------------------
+1- Need Integration testing
+2- Increase complexity
+3- Difficult to manage
+4- Requires do load balancing and fix network latency
+
+------------------------------------------
+Micro-services design pattern :
+------------------------------------------
+Listing here, some popular micro-services design pattern :
+1 : Service Registry pattern
+2 : circuit breaker pattern
+3 : API Gateway pattern
+4 : Event driven architecture
+5 : Database design pattern (1- database per service 2- shared database)
+6 : CQRS
+7 : Saga Pattern (1- Orchestrater, 2- Choreography)
+8 : Two phase commit
+9 : Externalized configuration
+10 : Backend for frontend
+11 : Bulkhead pattern
+12 : Composite etc
+
+------------------------------------------
+micro-services principle or 12-factor app :
+------------------------------------------
+1 : Codebase
+2 : Dependencies
+3 : Config
+4 : Backing services
+5 : Build, release, run
+6 : Processes
+7 : Port binding
+8 : Concurrency
+9 : Disposability  ==> stop and start
+10 : Dev/prod parity
+11 : Logs
+12 : Admin processes
+
+------------------------------------------
+How to implement :
+------------------------------------------
+Just think about that how many services are you going to create.(it depends on your project).
+Example :
+you can create two micro-services :
+1- user service
+2- department service
+
+OR
+
+1- Employee service
+2- Employee management service etc.
+----------------
+Steps :
+----------------
+Go to spring initializer
+1- choose language (java)
+2- Build tool (maven)
+3- Provide details of service (artifact, groupId, description etc)
+4- Add dependencies :
+	web starter
+	jpa starter
+	slf4j or lombok
+	H2 or mysql database
+5- export & import in code editor.
+
+same way create another service.
+
+=> Till here, we have only two micro-services that is okay. We can manage, easily do communication between them etc but lets assume
+	there are 100 or 500 services then 
+	-> How will you manage them?
+	-> How to know each services port, url, status etc.
+In this case it will become little  bit complex to manage and handle them.
+Here, Service registry will come into the picture.
+
+We will create service & will register all other services to it.
+1- Create service & give name as service registry .
+2- Add Eureka server (spring.cloud.netflix.eureka.server) dependency
+3- export & import in code editor.
+4- Goto main class where you have written main method & enable service registy by adding annotation
+	@EnableEurekaServer
+5- Since it will act as a server. Hence add below dependency in application.properties or applcation.yaml file :
+	1- Add server.port=8761 (by default port)
+	2- eureka.client.register-with-eureka=false
+	   eureka.client.fetch-registry=false
+		
+Question : How to register all services to service registry?
+Answer : Add below things in all other services : 
+			
+			1 : Add below dependencies in POM 
+				Eureka cloud & Eureka client descovery
+				<dependency>
+					<groupId>org.springframework.cloud</groupId>
+					<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+				</dependency>
+				<spring-cloud.version>2022.0.2</spring-cloud.version>
+				OR
+				<spring-cloud.version>Hoxton.SR3</spring-cloud.version>
+			2 : Goto main class where you have written main method & enable service registy by adding annotation
+				@EnableEurekaClient or @EnableDiscoveryClient
+			3 : Add below property in yaml file : 
+				eureka:
+					client:
+						register-with-eureka:true
+						fetch-registry:true
+						server-url:
+							default-zone: http://localhost:8761/eureka/
+					instance:
+						hostname: localhost
+
+-> You can also add applciation name in yaml.
+-> Now run service registry & hit above url, You will see registered services here.
+
+Here, request directly coming to the micro-services & they are doing communication that is okay. But what if there are multiple services and
+	making request to service then how to handle it?
+
+Here ApiGateway will come in to the picture.
+All the request coming from the user will not go directly to specific service instead of this all request will hit api gateway and it's api
+	Gateway responsibility to do route to specific service and get back the result.
+
+-> To implement ApiGateway :
+1 : Create a service name as api Gateway.
+2 : Add Eureka discovery cleint  dependency.
+3 : Add gateway dependency.
+4 : Add @EnableEurekaClient in main class where you have written main method. 
+5 : Add below prop
