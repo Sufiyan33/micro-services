@@ -1,5 +1,6 @@
 package com.company.management.controller;
 
+import com.company.management.VO.RespnseTemplateVO;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -87,6 +88,7 @@ public class CompanyController {
 			},
 			operationId = "/com/{id}"
 	)
+        //http://localhost:8081/company/com/{id}
 	@GetMapping("/com/{id}")
 	public Company getCompany(@PathVariable("id") long companyId) {
 		return service.fetchCompany(companyId);
@@ -137,11 +139,18 @@ public class CompanyController {
 		return service.updateCompany(companyId, company);
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/delete/{companyId}")
 	@Operation(description = "Delete data record", summary = "Delete existing data record by companyId", method = "Delete", parameters = {
 			@Parameter(name = "id") }, responses = { @ApiResponse(description = "On Delete", responseCode = "200"),
 			@ApiResponse(description = "Not Found", responseCode = "400") })
 	public String deleteCompanyById(@PathVariable long companyId) {
 		return service.deleteRecord(companyId);
 	}
+        
+        
+        @GetMapping("/fetch/{id}")
+	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") long comId) {
+		return service.fetchEmployeeWithDepartment(comId);
+	}
+        
 }

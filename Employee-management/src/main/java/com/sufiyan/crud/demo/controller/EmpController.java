@@ -36,6 +36,7 @@ public class EmpController {
 	@Autowired
 	private EmployeeService empService;
 
+	//http://localhost:8081/employee/save
 	@Hidden()
 	@PostMapping("/save")
 	@Operation(description = "Save Employee Data", summary = "We are trying to save employee data one by one into H2 Database.", responses = {
@@ -103,6 +104,7 @@ public class EmpController {
 		return empService.deleteRecord(id);
 	}
 
+	//http://localhost:8081/fetch/{id}
 	@GetMapping("/fetch/{id}")
 	public RespnseTemplateVO getEmployeeWithCompany(@PathVariable("id") long empId) {
 		return empService.fetchEmployeeWithDepartment(empId);

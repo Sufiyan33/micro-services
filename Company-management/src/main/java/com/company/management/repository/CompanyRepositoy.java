@@ -8,4 +8,5 @@ import com.company.management.entity.Company;
 @Repository
 public interface CompanyRepositoy extends JpaRepository<Company, Long> {
 
+    Company findByComId(long id);
 }

@@ -4,8 +4,6 @@
  */
 package com.company.management.DTO;
 
-
-
 /**
  *
  * @author 91976
