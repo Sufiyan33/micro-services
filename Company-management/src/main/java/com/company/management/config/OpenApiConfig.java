@@ -8,22 +8,10 @@ import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import org.springframework.context.annotation.Bean;
 
-@OpenAPIDefinition(info =
-@Info(
-        contact = @Contact(name = "Sufiyan",
-                email = "abc@gmail.com",
-                url = "http://localhost:8081/cruds"),
-        description = "OpenApi documentaion for spring boot crud apps",
-        title = "OpenApi specification - Sufiyan",
-        version = "1.0",
-        license = @License(
-                name = "Licence name",
-                url = "http://localhost:808/"),
-        termsOfService = "Terms of service declare here"),servers = {
-        @Server(description = "Local env", url = "http://localhost:808/"),
-        @Server(description = "Prod env", url = "http://localhost:808/") })
-        public class OpenApiConfig {
-
+@OpenAPIDefinition(info = @Info(contact = @Contact(name = "Sufiyan", email = "abc@gmail.com", url = "http://localhost:8081/cruds"), description = "OpenApi documentaion for spring boot crud apps", title = "OpenApi specification - Sufiyan", version = "1.0", license = @License(name = "Licence name", url = "http://localhost:808/"), termsOfService = "Terms of service declare here"), servers = {
+		@Server(description = "Local env", url = "http://localhost:808/"),
+		@Server(description = "Prod env", url = "http://localhost:808/") })
+public class OpenApiConfig {
 
 //    @Bean
 //    public OpenAPI springShopOpenAPI() {
@@ -37,4 +25,4 @@ import org.springframework.context.annotation.Bean;
 //                        .url("https://springshop.wiki.github.org/docs"));
 //    }
 
-         }
+}

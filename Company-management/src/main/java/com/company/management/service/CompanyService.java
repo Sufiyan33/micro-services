@@ -17,7 +17,7 @@ public class CompanyService {
 	private static final Logger log = LoggerFactory.getLogger(CompanyService.class.getSimpleName());
 
 	@Autowired
-	CompanyRepositoy repo;
+	private CompanyRepositoy repo;
 
 	@Autowired
 	private RestTemplate restTemplate;

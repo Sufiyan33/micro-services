@@ -30,7 +30,7 @@ public class CompanyController {
 	private static final Logger log = LoggerFactory.getLogger(CompanyController.class.getSimpleName());
 
 	@Autowired
-	CompanyService service;
+	private CompanyService service;
 
 	// http://localhost:8081/company/save
 
